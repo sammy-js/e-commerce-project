@@ -85,7 +85,7 @@
          <div style="padding-bottom:40px">
             <h2>Proceed To Order</h2>
             <a href="{{url('/cash_order')}}" class="btn btn-primary">Cash On Delivery</a>
-            <a href="{{url('/mpesastk')}}"  class="btn btn-success">Lipa Na Mpesa</a>
+            <a href="{{url('mpesastk',$totalprice)}}"  class="btn btn-success">Lipa Na Mpesa</a>
          </div>
         
       </div>

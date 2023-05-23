@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\payments\MpesaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,12 +29,18 @@ Route::get('/remove_product/{id}', [HomeController::class, 'remove_product']);
 
 Route::get('/cash_order', [HomeController::class, 'cash_order']);
 
-Route::get('/mpesastk', [HomeController::class, 'mpesastk']);
+Route::get('/mpesastk/{totalprice}', [HomeController::class, 'mpesastk']);
 
-Route::get('/generatetoken', [MpesaController::class, 'getAccessToken']);
+Route::get('/initiatepush', [HomeController::class, 'initiate_push']);
 
-Route::get('/stkpush', [MpesaController::class, 'initiateStkPush']);
-
+/*
+Route::controller(HomeController::class)
+->prefix('payments')
+->as('payments')
+->group(function(){
+    Route::get('/initiatepush','initiate_push')->name('initiatepush');
+});
+*/
 
 
 Route::middleware([

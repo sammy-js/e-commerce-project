@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Cart;
@@ -19,7 +21,20 @@ class HomeController extends Controller
     public function redirect(){
         $usertype=Auth::user()->usertype;
         if($usertype == '1'){
-           return view('admin.home');
+            $total_products = product::all()->count();
+            $total_orders = order::all()->count();
+            $total_customers = user::all()->count();
+            $order = order::all();
+            $total_revenue = 0;
+
+            foreach($order as $order){
+                $total_revenue = $total_revenue + $order->price;
+            }
+
+            $total_delivered = order::where('delivery_status','=','Delivered')->get()->count();
+            $total_processing = order::where('delivery_status','=','processing')->get()->count();
+
+           return view('admin.home',compact('total_products','total_orders','total_customers','total_revenue','total_delivered','total_processing'));
         }
         else{
             $products = Product::paginate(6);
@@ -140,8 +155,83 @@ class HomeController extends Controller
 
        }
 
-       public function mpesastk(){
-        return view('home.mpesastk');
+       public function mpesastk($totalprice){
+        return view('home.mpesastk',compact('totalprice'));
        }
+
+       public function token(){
+        $consumerKey = '0AVKQNniX7tTJ25azSVNOVPg6yse7zLN' ;
+        $consumerSecret = 'NQA9dOA0yfbYA57v';
+        $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        
+        $response = HTTP::withBasicAuth( $consumerKey , $consumerSecret)->get($url);
+        return $response['access_token'];
+
+    }
+
+    public function initiate_push(){
+        $accessToken = $this->token();
+        $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
+        $BusinessShortCode = 174379;
+        $Timestamp = Carbon::now()->format('YdmHis');
+        $password =base64_encode( $BusinessShortCode. $passkey.$Timestamp);
+        $TransactionType = "CustomerPayBillOnline";
+        $Amount = 1;
+        $partyA = 254791085478;
+        $partyB = 174379;
+        $phoneNumber = $partyA;
+        $callbackUrl = ' https://3f10-102-222-147-146.ngrok-free.app';
+        $AccountReference = 'SLEEZYTECHS PAYMENTS';
+        $TransactionDesc ='Payments for Goods';
+        $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $accessToken];
+
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); //setting custom header
+$curl_post_data = array(
+  //Fill in the request parameters with valid values
+           'BusinessShortCode' => $BusinessShortCode,
+            'Password' =>  $password,
+            'Timestamp' =>  $Timestamp,
+            'TransactionType' =>  $TransactionType,
+            'Amount' => $Amount,
+            'PartyA' =>  $partyA,
+            'PartyB' => $partyB,
+            'PhoneNumber' => $phoneNumber,
+            'CallBackURL' => $callbackUrl,
+            'AccountReference' => $AccountReference,
+            'TransactionDesc' => $TransactionDesc,
+);
+
+$data_string = json_encode($curl_post_data);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+$curl_response = curl_exec($curl);
+//ECHO  RESPONSE
+$data = json_decode($curl_response);
+
+return $data;
+
+       /*
+        $response = Http::withToken($accessToken)->post($url,[
+            'BusinessShortCode' => $BusinessShortCode,
+            'Password' =>  $password,
+            'Timestamp' =>  $Timestamp,
+            'TransactionType' =>  $TransactionType,
+            'Amount' => $Amount,
+            'PartyA' =>  $partyA,
+            'PartyB' => $partyB,
+            'PhoneNumber' => $phoneNumber,
+            'CallBackURL' => $callbackUrl,
+            'AccountReference' => $AccountReference,
+            'TransactionDesc' => $TransactionDesc,
+        ]);
+         
+        return $response;
+        */
+
+    }
 
 }

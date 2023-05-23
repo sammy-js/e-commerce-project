@@ -1,8 +1,8 @@
 <section class="product_section layout_padding">
          <div class="container">
             <div class="heading_container heading_center">
-               <h2>
-                  Our <span>products</span>
+               <h2 id="products">
+                  Our <span>products</span> </a>
                </h2>
             </div>
             <div class="row">

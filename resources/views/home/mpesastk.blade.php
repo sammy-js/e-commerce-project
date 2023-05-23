@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
    <head>
+    <base href="/public">
       <!-- Basic -->
       <meta charset="utf-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -47,19 +48,20 @@
                     </div>
                 @endif
 
-                <form action="{{url('/stkpush')}}" method="POST">
+                <form action="{{url('/initiatepush')}}">
                     @csrf
                    
                         <div class="card-header" style="font-size:25px;font-weight:bold;text-align:center;color:green">Lipa Na Mpesa</div>
                         <div class="card-body">
-                        
+                             
+                             <div style="color:blue;font-weight:bold">Total Amount:Sh.{{$totalprice}}</div>
                             <label for="phone_number" class="form-label">Phone Number:</label>
                             <input type="number" name="phonenumber" class="form-control" id="phone_number"
                                 placeholder="0791xxxx78" aria-describedby="emailHelp" required>
                         
                             <label for="_amount" class="form-label">Amount:</label>
                             <input type="number" name="amount" class="form-control" placeholder="10"
-                                id="_amount">
+                                id="_amount" value={{$totalprice}}>
                         
                             <input type="submit" class="btn btn-success" value="Process Payment">
                         
