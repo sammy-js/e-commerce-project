@@ -20,10 +20,6 @@
       <link href="{{asset('home/css/style.css')}}" rel="stylesheet" />
       <!-- responsive style -->
       <link href="{{asset('home/css/responsive.css')}}" rel="stylesheet" />
-
-      <!-- sweetalert cdn link -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <!-- sweetalert cdn link ends-->
       <style>
         .center{
             text-align:center;
@@ -41,9 +37,6 @@
       </style>
    </head>
    <body>
-
-   @include('sweetalert::alert')
-
          <!-- header section strats -->
         @include('home.header')
          <!-- end header section -->
@@ -57,71 +50,44 @@
           @endif
 
       <div class="center">
-         <table>
+         <table class="mb-5">
             <tr>
                 <th class="th_deg">Product Title</th>
                 <th class="th_deg">Product Quantity</th>
                 <th class="th_deg">Product Price</th>
+                <th class="th_deg">Payment Status</th>
+                <th class="th_deg">Delivery Status</th>
                 <th class="th_deg">Product Image</th>
                 <th class="th_deg">Action</th>
             </tr>
              
-           <?php $totalprice = 0; ?>
-            @foreach($cart as $cart)
+            @foreach($order as $order)
             <tr>
-                <td>{{$cart->product_title}}</td>
-                <td>{{$cart->quantity}}</td>
-                <td>Sh.{{$cart->price}}</td>
+                <td>{{$order->product_title}}</td>
+                <td>{{$order->quantity}}</td>
+                <td>{{$order->price}}</td>
+                <td>{{$order->payment_status}}</td>
+                <td>{{$order->delivery_status}}</td>
                 <td>
-                    <img style="height:150px;width:150px;" src="/product/{{$cart->image}}" >
+                    <img style="height:150px;width:150px;" src="/product/{{$order->image}}" >
                 </td>
                 <td>
-                    <!--NOTE: must include event in the brackets -->
-                   <a class="btn btn-danger" onclick="confirmation(event)" href="{{url('remove_product',$cart->id)}}">Remove</a>
+                    @if($order->delivery_status == 'processing')
+                    <a href="{{url('cancel_order',$order->id)}}" onclick="return confirm('Are You Sure To Cancel This Order!!')" class="btn btn-danger">Cancel</a>
+                    @else
+                    <p style="color:blue">Not Allowed</p>
+                    @endif
                 </td>
+                
             </tr>
 
-            <?php $totalprice = $totalprice + $cart->price; ?>
 
             @endforeach
          </table>
 
-         <div style="font-size:20px;padding-top:10px;padding-bottom:30px;">
-         <span style="font-size:25px;color:blue;font-weight:bold;"> Total Price:</span> Sh.{{$totalprice}}
-         </div>
 
-         <div style="padding-bottom:40px">
-            <h2>Proceed To Order</h2>
-            <a href="{{url('/cash_order')}}" class="btn btn-primary">Cash On Delivery</a>
-            <a href="{{url('mpesastk',$totalprice)}}"  class="btn btn-success">Lipa Na Mpesa</a>
-         </div>
         
       </div>
-
-      <script>
-        /*ev is the shortform of event*/
-        function confirmation(ev){
-            /*will prevent the removing of the product first*/
-            ev.preventDefault();
-
-            /*href="{{url('remove_product',$cart->id)}}" is stored in urlToRedirect variable*/
-            var urlToRedirect = ev.currentTarget.getAttribute('href');
-            console.log(urlToRedirect);
-            /*swal is a function that is used to display a sweetalert message*/
-            swal({
-                title: "Are you sure to remove this product?",
-                text: "You Will Not be able To Revert This!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willCancel) => {
-                if (willCancel) {
-                    window.location.href = urlToRedirect;
-                }
-            });
-        }
-      </script>
       
       <!-- jQuery (javascript cdn link) -->
       <script src="{{asset('home/js/jquery-3.4.1.min.js')}}"></script> 

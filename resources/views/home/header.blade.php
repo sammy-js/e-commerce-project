@@ -1,7 +1,7 @@
 <header class="header_section">
             <div class="container">
                <nav class="navbar navbar-expand-lg custom_nav-container ">
-                  <a class="navbar-brand" href="{{url('/')}}"><img width="150" height="100" src="images/logo.jpg" alt="#" />SLEEZYTECHS</a>
+                  <a class="navbar-brand" href="{{url('/')}}"><img width="150" height="100" src="{{asset('/images/logo.jpg')}}" alt="#" />SLEEZYTECHS</a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class=""> </span>
                   </button>
@@ -18,16 +18,23 @@
                            </ul>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="#products">Products</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" href="blog_list.html">Blog</a>
+                           <a class="nav-link" href="{{url('/products')}}">Products</a>
                         </li>
                         <li class="nav-item">
                            <a class="nav-link" href="#contacts">Contact</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="{{url('/show_cart')}}">CART</a>
+                           <a class="nav-link" href="{{url('/show_cart')}}">
+                          
+                                 CART    
+                               <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border  border-light rounded-circle">
+                                   <span class="visually-hidden"></span>
+                               </span>
+                             
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="{{url('/show_order')}}">Order</a>
                         </li>
                         <form class="form-inline">
                            <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">

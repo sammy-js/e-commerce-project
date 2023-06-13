@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- <base href="/public"> is used to locate css files in the public folder in this case-->
-    <base href="/public">
   @include('admin.css') 
   <style>
     .div_center{
@@ -45,7 +43,7 @@
          @endif
 
          <div class="div_center">
-          <h2>Update Product</h2>
+          <h2>Edit Product</h2>
           <form action="{{url('/update_product_confirm',$product->id)}}" method="POST" enctype="multipart/form-data">
              <!-- enctype="multipart/form-data" is necessary becoz of image -->
             @csrf

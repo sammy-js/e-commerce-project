@@ -156,6 +156,7 @@ return [
     */
 
     'providers' => ServiceProvider::defaultProviders()->merge([
+        Barryvdh\DomPDF\ServiceProvider::class, 
         /*
          * Package Service Providers...
          */
@@ -170,7 +171,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-        \Safaricom\Mpesa\MpesaServiceProvider::class,
+        
     ])->toArray(),
 
     /*
@@ -186,7 +187,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'Mpesa'=> \Safaricom\Mpesa\MpesaServiceProvider::class,
+        'PDF'=>Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
  
     /*a process of securing this details thus the details won`t be shown when there is a debug*/

@@ -1,14 +1,11 @@
 <section class="product_section layout_padding">
          <div class="container">
             <div class="heading_container heading_center">
-               <h2 id="products">
-                  Our <span>products</span> </a>
-               </h2>
            
                <!-- search product with pagination-->
                <div>
 
-               <form action="{{url('product_search')}}" method="GET">
+               <form action="{{url('search_product')}}" method="GET">
 
                @csrf
 
@@ -21,7 +18,7 @@
               <!-- end search product with pagination-->
 
             </div>
-
+            
             @if(session()->has('message'))
           
           <div class="alert alert-success" >

@@ -22,27 +22,13 @@
       <link href="{{asset('home/css/responsive.css')}}" rel="stylesheet" />
    </head>
    <body>
-
-   @include('sweetalert::alert')
-
       <div class="hero_area">
          <!-- header section strats -->
         @include('home.header')
          <!-- end header section -->
-         <!-- slider section -->
-         @include('home.slider')
-         <!-- end slider section -->
-      </div>
-      <!-- why section -->
-      @include('home.why')
-      <!-- end why section -->
-      
-      <!-- arrival section -->
-      @include('home.newarrivals')
-      <!-- end arrival section -->
       
       <!-- product section -->
-      @include('home.product')
+      @include('home.product_view')
       <!-- end product section -->
 
       <!-- reply and comments section begins here -->
@@ -106,24 +92,8 @@
       </div>
 
       <!-- reply and comments section ends here -->
-
-      <!-- subscribe section -->
-      @include('home.subscribe')
-      <!-- end subscribe section -->
-      <!-- client section -->
-      @include('home.client')
-      <!-- end client section -->
-      <!-- footer start -->
-      @include('home.footer')
-      <!-- footer end -->
-      <div class="cpy_">
-         <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
-         
-            Distributed By <a href="https://sleezytechs.com/" target="_blank">SleezyTechs</a>
-         
-         </p>
-      </div>
-
+    </div>
+      
       <script type="text/javascript">
 
          function reply(caller){
