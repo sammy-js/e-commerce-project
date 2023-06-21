@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Profile;
 use PDF;
 use Notification;
 use App\Notifications\SendEmailNotification;
@@ -277,5 +281,155 @@ class AdminController extends Controller
     }
     
     }
+
+    public function change_password(){
+        if(Auth::id())
+        {
+            return view('admin.change_password');
+        }
+        else
+       {
+        return redirect()->route('login');
+       }
+
+    }
+
+    public function change_password_confirm(Request $request){
+    if(Auth::id()){
+         $request->validate([
+            'current_password' => ['required','string','min:8'],
+            'password' => ['required','string','min:8','confirmed']
+         ]); 
+
+         $currentpasswordstatus = Hash::check($request->current_password, auth()->user()->password);
+
+         if($currentpasswordstatus){
+            User::findOrFail(Auth::user()->id)->update([
+                'password' => Hash::make($request->password),
+            ]);
+
+            return redirect()->back()->with('message','Password Updated Successfully');
+         }
+         else{
+            return redirect()->back()->with('message','Current Password does not match with Old Password');
+         }
+
+        }
+   else
+    {
+        return redirect()->route('login');
+    }
+
+    }
+
+    public function account_setting(){
+        if(Auth::id())
+        {
+            return view('admin.profile_setting');
+        }
+        else
+           {
+
+             return redirect()->route('login');
+
+         }
+
+    }
+
+    public function add_account_setting(Request $request){
+        if(Auth::id()){
+     /*first() method is used to retrieve the first record from a database table based on the query conditions.*/
+   // Check if a record already exists
+   $existingRecord = Profile::first();
+
+   if ($existingRecord) {
+       // A record already exists, return an error 
+       return redirect()->back()->with('error','Oops!! Only one profile record is allowed. Try Editing');
+   }
+     
+       $profile = new Profile();
+   
+        $profile->profile_name = $request->profileName;
+        
+        $image = $request->image;
+
+        if($image)
+        {
+        $imagename = time().'.'.$image->getClientOriginalExtension();
+        $request->image->move('product',$imagename);
+
+        $profile->image = $imagename;
+        }
+
+        $profile->save();
+
+        return redirect()->back()->with('message','Profile Added Successfully');
+       }
+    else
+    {
+        return redirect()->route('login');
+    }
+
+    }
+
+    public function show_account_details(){
+        if(Auth::id())
+        {
+             $profile = profile::all();
+             return view('admin.profile_show',compact('profile'));
+              
+        }
+        else
+           {
+
+             return redirect()->route('login');
+
+         }
+    }
+
+    public function edit_account_setting($id){
+        if(Auth::id())
+        {
+            $profile = Profile::find($id);
+            return view('admin.profile_edit',compact('profile'));
+        }
+        else
+           {
+
+             return redirect()->route('login');
+
+         }
+
+    }
+
+    public function edit_account_confirm(Request $request,$id){
+        if(Auth::id())
+         {
+            $profile = Profile::find($id);
+    
+            $profile->company_name = $request->companyName;
+            $profile->profile_name = $request->profileName;
+            
+            $image = $request->image;
+
+            if($image)
+            {
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->image->move('product',$imagename);
+    
+            $profile->image = $imagename;
+            }
+    
+           $profile->save();
+    
+            return redirect()->back()->with('message','Profile Updated Successfully');
+        }
+        else
+        {
+            return redirect()->route('login');
+        }
+    
+        }
+        
 }
 

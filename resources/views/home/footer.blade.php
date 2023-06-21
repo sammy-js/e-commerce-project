@@ -52,11 +52,14 @@
                           <p>Subscribe by our newsletter and get update protidin.</p>
                         </div>
                         <div class="form_sub">
-                           <form>
+                           <form action="{{url('/add-subscriber-email')}}" method="post" enctype="multipart/form-data">
+
+                           @csrf
+
                               <fieldset>
                                  <div class="field">
-                                    <input type="email" placeholder="Enter Your Mail" name="email" />
-                                    <input type="submit" value="Subscribe" />
+                                    <input type="email" placeholder="Enter Your Mail" name="email" id="subscriber_email"/>
+                                    <input type="submit" value="Subscribe"/>
                                  </div>
                               </fieldset>
                            </form>
@@ -68,3 +71,6 @@
             </div>
          </div>
       </footer>
+
+     
+         

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,14 @@ Route::get('/product_search', [HomeController::class, 'product_search']);
 Route::get('/products', [HomeController::class, 'product']);
 
 Route::get('/search_product', [HomeController::class, 'search_product']);
+
+Route::get('/contact_us', [HomeController::class, 'show_contact']);
+
+Route::post('/contact_mail', [HomeController::class, 'contact_mail_send']);
+
+
+//add newsletter subscriber email
+Route::post('/add-subscriber-email', [HomeController::class, 'storeNewsletterEmail']);
 
 
 /*
@@ -97,6 +106,22 @@ Route::get('/print_pdf/{id}', [AdminController::class, 'print_pdf']);
 Route::get('/send_email/{id}', [AdminController::class, 'send_email']);
 
 Route::post('/send_user_email/{id}',[AdminController::class, 'send_user_email']);
+
+Route::get('/account_setting', [AdminController::class, 'account_setting']);
+
+Route::post('/add_account_setting', [AdminController::class, 'add_account_setting']);
+
+Route::get('/show_account_details', [AdminController::class, 'show_account_details']);
+
+Route::get('/edit_account_setting/{id}', [AdminController::class, 'edit_account_setting']);
+
+Route::post('/edit_account_confirm/{id}', [AdminController::class, 'edit_account_confirm']);
+
+Route::get('/change_password', [AdminController::class, 'change_password']);
+
+Route::post('/change_password_confirm', [AdminController::class, 'change_password_confirm']);
+
+
 
 
 

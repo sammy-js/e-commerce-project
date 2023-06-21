@@ -104,7 +104,7 @@
             /*will prevent the removing of the product first*/
             ev.preventDefault();
 
-            /*href="{{url('remove_product',$cart->id)}}" is stored in urlToRedirect variable*/
+            /*href="url('remove_product',$cart->id)" is stored in urlToRedirect variable*/
             var urlToRedirect = ev.currentTarget.getAttribute('href');
             console.log(urlToRedirect);
             /*swal is a function that is used to display a sweetalert message*/

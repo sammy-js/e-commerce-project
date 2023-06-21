@@ -13,6 +13,10 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Comment;
 use App\Models\Reply;
+use App\Models\Newsletter;
+use App\Models\NewsletterSubscriber;
+use App\Mail\ContactMail;
+use Mail;
 
 class HomeController extends Controller
 {
@@ -389,5 +393,39 @@ return $data;
         return view('home.all_product',compact('products','comment','replys'));
     }
 
+    public function storeNewsletterEmail(Request $request){
+ 
+        NewsletterSubscriber::create(['email'=>$request->email]);
 
+        $mail_controller = new EmailController;
+        $subscriber_message = Newsletter::where('action','NEWSLETTER_SUBSCRIPTION_CUSTOMER')->first();
+
+        $admin_message = Newsletter::where('action','NEWSLETTER_SUBSCRIPTION_ADMIN')->first();
+
+        if($subscriber_message){
+            $mail_controller->sendEmail($subscriber_message->title, $subscriber_message->subject, $subscriber_message->body, $request->email );
+        }
+
+        if($admin_message){
+
+            $admins = User::where('email','samm31701@gmail.com')->get();
+
+            foreach($admins as $admin){
+            $mail_controller->sendEmail($admin_message->title, $admin_message->subject, $admin_message->body, $admin->email ,'' ,'Admin');
+            }
+        }
+
+        return redirect()->back();
+ } 
+
+ public function show_contact(){
+    return view ('home.contact-us');
+ }
+
+ public function contact_mail_send(Request $request){
+    Mail::to('sammysleezy254@gmail.com')->send(new ContactMail($request));
+
+    return redirect()->back();
+ }
+ 
 }
