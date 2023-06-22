@@ -21,16 +21,24 @@
                            <a class="nav-link" href="{{url('/products')}}">Products</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="{{url('/contact_us')}}">Contact</a>
+                           <a class="nav-link" href="{{url('/contact_us')}}">Contact-us</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="{{url('/show_cart')}}">
-                          
+                           <a class="nav-link" href="{{url('/show_cart')}}">  
                                  CART    
-                               <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border  border-light rounded-circle">
+                                 <?php 
+                                 $user = Auth::user();
+
+                                 $userId = $user->id;
+                                   
+                                    $cartcount = DB::table('carts')->where('user_id','=',$userId)->count();
+                                    
+                                   ?> 
+                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+                                    {{$cartcount}}
                                    <span class="visually-hidden"></span>
-                               </span>
-                             
+                                 </span>
+                                 <?php ?>
                            </a>
                         </li>
                         <li class="nav-item">

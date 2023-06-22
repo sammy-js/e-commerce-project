@@ -49,7 +49,8 @@ class HomeController extends Controller
             $products = Product::paginate(6);
             $comment = comment::all();
             $replys = reply::all();
-     return view('home.userpage',compact('products','comment','replys'));
+            $cartcount = cart::all()->count();
+     return view('home.userpage',compact('products','comment','replys','cartcount'));
         }
        }
 

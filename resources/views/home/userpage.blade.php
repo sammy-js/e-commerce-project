@@ -50,13 +50,14 @@
          <h1 style="padding-top:20px;">Comments</h1>
          <form action="{{url('/add_comment')}}" method="POST">
 
-         @csrf
-
+          @csrf
+         
             <textarea  style="height:150px;width:600px;" placeholder="Comment Something Here" name="comment">
 
             </textarea>
             <br>
             <input type="submit" value="Comment">
+        
          </form>
       </div>
 
@@ -67,7 +68,7 @@
          <div>
             
             <b>{{$comment->name}}</b>
-            <p>{{$comment->comment}}</p>
+            <p>{{$comment->comment}}</p> 
 
             <!-- javascript::void(0) avoids the website from reloading when reply is clicked -->
             <a style="color:blue" href="javascript::void(0);" onclick="reply(this)" data-Commentid="{{$comment->id}}">Reply</a>
